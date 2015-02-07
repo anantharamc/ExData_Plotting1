@@ -1,0 +1,26 @@
+#
+# This function plots Global active power as a histogram and saves it as plot1.png
+# Input dataset: Saved in a folder called Household_Power in the working directory
+#
+plot1 <- function() {
+        
+        data <- read.table("./Household_Power/household_power_consumption.txt", sep = ";", header = TRUE, na.strings = "?", 
+                           skip = 66636, nrows = 2880, stringsAsFactors = FALSE, 
+                           col.names = c("Date", "Time", "Global_active_power", "Global_reactive_power", "Voltage", 
+                                        "Global_intensity", "Sub_metering_1", "Sub_metering_2", "Sub_metering_3") )
+        
+        # Combine date and time columns into one
+        data$Date <- strptime(paste(data$Date,data$Time), "%d/%m/%Y %H:%M:%S")
+        data <- data[, c(1, 3:9)]
+        
+        # Open a PNG graphics device and draw histogram
+        png(filename = "plot1.png", height = 480, width = 480)
+        
+        hist(data$Global_active_power, xlab = "Global Active Power (kilowatts)", col = "red", main = "Global Active Power")
+        
+        # Close graphics device
+        dev.off()
+        
+}
+
+
